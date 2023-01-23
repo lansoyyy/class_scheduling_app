@@ -123,7 +123,7 @@ class _ClassCardState extends State<ClassCard> {
                                                       ),
                                                       TextBold(
                                                           text:
-                                                              'Adding Schedule',
+                                                              'Adding Schedule - ${widget.label}',
                                                           fontSize: 18,
                                                           color: Colors.black),
                                                       const SizedBox(
