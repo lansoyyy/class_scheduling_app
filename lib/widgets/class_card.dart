@@ -1,12 +1,27 @@
+import 'package:class_scheduling_app/screens/home_screen.dart';
 import 'package:class_scheduling_app/utils/colors.dart';
 import 'package:class_scheduling_app/widgets/text_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
-class ClassCard extends StatelessWidget {
+class ClassCard extends StatefulWidget {
   var label;
 
   ClassCard({required this.label});
+
+  @override
+  State<ClassCard> createState() => _ClassCardState();
+}
+
+class _ClassCardState extends State<ClassCard> {
+  late String className = '';
+
+  late String room = '';
+
+  late String from = '';
+
+  late String to = '';
 
   @override
   Widget build(BuildContext context) {
@@ -34,150 +49,197 @@ class ClassCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       TextRegular(
-                          text: label, fontSize: 28, color: Colors.black),
+                          text: widget.label,
+                          fontSize: 28,
+                          color: Colors.black),
                       IconButton(
                           onPressed: () {
                             showDialog(
                                 context: context,
                                 builder: (context) {
-                                  return Dialog(
-                                    child: Container(
-                                      height: 420,
-                                      decoration: BoxDecoration(
-                                        color: primary,
-                                        borderRadius: BorderRadius.circular(5),
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 15, right: 15),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            const SizedBox(
-                                              height: 20,
-                                            ),
-                                            TextBold(
-                                                text: 'Adding Schedule',
-                                                fontSize: 18,
-                                                color: Colors.black),
-                                            const SizedBox(
-                                              height: 20,
-                                            ),
-                                            TextRegular(
-                                                text: 'Class name/code:',
-                                                fontSize: 12,
-                                                color: Colors.black),
-                                            SizedBox(
-                                              height: 35,
-                                              child: TextFormField(
-                                                onChanged: ((value) {}),
-                                                decoration:
-                                                    const InputDecoration(
-                                                        enabledBorder:
-                                                            OutlineInputBorder(
-                                                          borderSide: BorderSide(
-                                                              width: 1,
-                                                              color: Colors
-                                                                  .black), //<-- SEE HERE
-                                                        ),
-                                                        filled: true,
-                                                        fillColor:
-                                                            Colors.white),
+                                  return StatefulBuilder(
+                                      builder: ((context, setState) {
+                                    return Dialog(
+                                      child: Container(
+                                        height: 420,
+                                        decoration: BoxDecoration(
+                                          color: primary,
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: 15, right: 15),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              const SizedBox(
+                                                height: 20,
                                               ),
-                                            ),
-                                            const SizedBox(height: 10),
-                                            TextRegular(
-                                                text: 'Room:',
-                                                fontSize: 12,
-                                                color: Colors.black),
-                                            SizedBox(
-                                              height: 35,
-                                              child: TextFormField(
-                                                onChanged: ((value) {}),
-                                                decoration:
-                                                    const InputDecoration(
-                                                        enabledBorder:
-                                                            OutlineInputBorder(
-                                                          borderSide: BorderSide(
-                                                              width: 1,
-                                                              color: Colors
-                                                                  .black), //<-- SEE HERE
-                                                        ),
-                                                        filled: true,
-                                                        fillColor:
-                                                            Colors.white),
+                                              TextBold(
+                                                  text: 'Adding Schedule',
+                                                  fontSize: 18,
+                                                  color: Colors.black),
+                                              const SizedBox(
+                                                height: 20,
                                               ),
-                                            ),
-                                            const SizedBox(height: 10),
-                                            TextRegular(
-                                                text: 'Schedule:',
-                                                fontSize: 12,
-                                                color: Colors.black),
-                                            Center(
-                                              child: SizedBox(
-                                                height: 50,
-                                                width: 200,
-                                                child: CupertinoDatePicker(
-                                                  mode: CupertinoDatePickerMode
-                                                      .time,
-                                                  initialDateTime:
-                                                      DateTime.now(),
-                                                  onDateTimeChanged:
-                                                      (DateTime newDateTime) {
-                                                    // Handle the change
-                                                  },
+                                              TextRegular(
+                                                  text: 'Class name/code:',
+                                                  fontSize: 12,
+                                                  color: Colors.black),
+                                              SizedBox(
+                                                height: 35,
+                                                child: TextFormField(
+                                                  onChanged: ((value) {
+                                                    className = value;
+                                                  }),
+                                                  decoration:
+                                                      const InputDecoration(
+                                                          enabledBorder:
+                                                              OutlineInputBorder(
+                                                            borderSide: BorderSide(
+                                                                width: 1,
+                                                                color: Colors
+                                                                    .black), //<-- SEE HERE
+                                                          ),
+                                                          filled: true,
+                                                          fillColor:
+                                                              Colors.white),
                                                 ),
                                               ),
-                                            ),
-                                            Center(
-                                              child: Padding(
-                                                padding: const EdgeInsets.only(
-                                                    top: 10, bottom: 10),
-                                                child: TextRegular(
-                                                    text: 'to',
-                                                    fontSize: 12,
-                                                    color: Colors.black),
-                                              ),
-                                            ),
-                                            Center(
-                                              child: SizedBox(
-                                                height: 50,
-                                                width: 200,
-                                                child: CupertinoDatePicker(
-                                                  mode: CupertinoDatePickerMode
-                                                      .time,
-                                                  initialDateTime:
-                                                      DateTime.now(),
-                                                  onDateTimeChanged:
-                                                      (DateTime newDateTime) {
-                                                    // Handle the change
-                                                  },
+                                              const SizedBox(height: 10),
+                                              TextRegular(
+                                                  text: 'Room:',
+                                                  fontSize: 12,
+                                                  color: Colors.black),
+                                              SizedBox(
+                                                height: 35,
+                                                child: TextFormField(
+                                                  onChanged: ((value) {
+                                                    room = value;
+                                                  }),
+                                                  decoration:
+                                                      const InputDecoration(
+                                                          enabledBorder:
+                                                              OutlineInputBorder(
+                                                            borderSide: BorderSide(
+                                                                width: 1,
+                                                                color: Colors
+                                                                    .black), //<-- SEE HERE
+                                                          ),
+                                                          filled: true,
+                                                          fillColor:
+                                                              Colors.white),
                                                 ),
                                               ),
-                                            ),
-                                            const SizedBox(height: 30),
-                                            Center(
-                                              child: MaterialButton(
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            5),
+                                              const SizedBox(height: 10),
+                                              TextRegular(
+                                                  text: 'Schedule:',
+                                                  fontSize: 12,
+                                                  color: Colors.black),
+                                              Center(
+                                                child: SizedBox(
+                                                  height: 50,
+                                                  width: 200,
+                                                  child: CupertinoDatePicker(
+                                                    mode:
+                                                        CupertinoDatePickerMode
+                                                            .time,
+                                                    initialDateTime:
+                                                        DateTime.now(),
+                                                    onDateTimeChanged:
+                                                        (DateTime newDateTime) {
+                                                      print(newDateTime.hour);
+                                                      print(newDateTime.minute);
+                                                      print(newDateTime.second);
+
+                                                      setState(() {
+                                                        from = (newDateTime
+                                                                    .hour +
+                                                                newDateTime
+                                                                    .minute +
+                                                                newDateTime
+                                                                    .second)
+                                                            .toString();
+                                                      });
+
+                                                      // Handle the change
+                                                    },
                                                   ),
-                                                  color: greenAccet,
-                                                  minWidth: 150,
-                                                  height: 40,
+                                                ),
+                                              ),
+                                              Center(
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          top: 10, bottom: 10),
                                                   child: TextRegular(
-                                                      text: 'Done',
-                                                      fontSize: 14,
-                                                      color: Colors.white),
-                                                  onPressed: () {}),
-                                            ),
-                                          ],
+                                                      text: 'to',
+                                                      fontSize: 12,
+                                                      color: Colors.black),
+                                                ),
+                                              ),
+                                              Center(
+                                                child: SizedBox(
+                                                  height: 50,
+                                                  width: 200,
+                                                  child: CupertinoDatePicker(
+                                                    mode:
+                                                        CupertinoDatePickerMode
+                                                            .time,
+                                                    initialDateTime:
+                                                        DateTime.now(),
+                                                    onDateTimeChanged:
+                                                        (DateTime newDateTime) {
+                                                      setState(() {
+                                                        to = (newDateTime.hour +
+                                                                newDateTime
+                                                                    .minute +
+                                                                newDateTime
+                                                                    .second)
+                                                            .toString();
+                                                      });
+                                                      // Handle the change
+                                                    },
+                                                  ),
+                                                ),
+                                              ),
+                                              const SizedBox(height: 30),
+                                              Center(
+                                                child: MaterialButton(
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              5),
+                                                    ),
+                                                    color: greenAccet,
+                                                    minWidth: 150,
+                                                    height: 40,
+                                                    child: TextRegular(
+                                                        text: 'Done',
+                                                        fontSize: 14,
+                                                        color: Colors.white),
+                                                    onPressed: () {
+                                                      Navigator.of(context)
+                                                          .pushReplacement(
+                                                              MaterialPageRoute(
+                                                                  builder:
+                                                                      (context) =>
+                                                                          HomeScreen()));
+
+                                                      Fluttertoast.showToast(
+                                                          msg:
+                                                              'Schedule added!');
+                                                    }),
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  );
+                                    );
+                                  }));
                                 });
                           },
                           icon: const Icon(
