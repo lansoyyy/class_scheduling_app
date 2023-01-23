@@ -4,6 +4,7 @@ import 'package:class_scheduling_app/widgets/text_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:localstore/localstore.dart';
 
 class ClassCard extends StatefulWidget {
   var label;
@@ -15,6 +16,12 @@ class ClassCard extends StatefulWidget {
 }
 
 class _ClassCardState extends State<ClassCard> {
+  @override
+  void initState() {
+    super.initState();
+    getData();
+  }
+
   late String className = '';
 
   late String room = '';
@@ -23,294 +30,381 @@ class _ClassCardState extends State<ClassCard> {
 
   late String to = '';
 
+  final db = Localstore.instance;
+
+  List<String> rooms = [];
+  List<String> classNames = [];
+  List<String> froms = [];
+  List<String> tos = [];
+  List<String> ids = [];
+
+  var hasLoaded = false;
+
+  getData() async {
+    final items = await db.collection(widget.label).get();
+
+    if (items != null) {
+      List<dynamic> values1 = items.values.toList();
+
+      values1.sort((a, b) => a['from'].compareTo(b['from']));
+
+      for (var element in values1) {
+        rooms.add(element['room']);
+        classNames.add(element['className']);
+        froms.add(element['from']);
+        tos.add(element['to']);
+        ids.add(element['id']);
+      }
+    }
+
+    setState(() {
+      hasLoaded = true;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
-      child: Card(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-        elevation: 3,
-        child: Container(
-          decoration: BoxDecoration(
-            color: brownAccet,
-            borderRadius: BorderRadius.circular(5),
-          ),
-          width: double.infinity,
-          height: 250,
-          child: Column(
-            children: [
-              Container(
-                height: 50,
-                color: primary,
-                width: double.infinity,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return hasLoaded
+        ? SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+              child: Card(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5)),
+                elevation: 3,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: brownAccet,
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  width: double.infinity,
+                  height: 250,
+                  child: Column(
                     children: [
-                      TextRegular(
-                          text: widget.label,
-                          fontSize: 28,
-                          color: Colors.black),
-                      IconButton(
-                          onPressed: () {
-                            showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return StatefulBuilder(
-                                      builder: ((context, setState) {
-                                    return Dialog(
-                                      child: Container(
-                                        height: 420,
-                                        decoration: BoxDecoration(
-                                          color: primary,
-                                          borderRadius:
-                                              BorderRadius.circular(5),
-                                        ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 15, right: 15),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              const SizedBox(
-                                                height: 20,
-                                              ),
-                                              TextBold(
-                                                  text: 'Adding Schedule',
-                                                  fontSize: 18,
-                                                  color: Colors.black),
-                                              const SizedBox(
-                                                height: 20,
-                                              ),
-                                              TextRegular(
-                                                  text: 'Class name/code:',
-                                                  fontSize: 12,
-                                                  color: Colors.black),
-                                              SizedBox(
-                                                height: 35,
-                                                child: TextFormField(
-                                                  onChanged: ((value) {
-                                                    className = value;
-                                                  }),
-                                                  decoration:
-                                                      const InputDecoration(
-                                                          enabledBorder:
-                                                              OutlineInputBorder(
-                                                            borderSide: BorderSide(
-                                                                width: 1,
-                                                                color: Colors
-                                                                    .black), //<-- SEE HERE
-                                                          ),
-                                                          filled: true,
-                                                          fillColor:
-                                                              Colors.white),
+                      Container(
+                        height: 50,
+                        color: primary,
+                        width: double.infinity,
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              TextRegular(
+                                  text: widget.label,
+                                  fontSize: 28,
+                                  color: Colors.black),
+                              IconButton(
+                                  onPressed: () {
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return StatefulBuilder(
+                                              builder: ((context, setState) {
+                                            return Dialog(
+                                              child: Container(
+                                                height: 420,
+                                                decoration: BoxDecoration(
+                                                  color: primary,
+                                                  borderRadius:
+                                                      BorderRadius.circular(5),
                                                 ),
-                                              ),
-                                              const SizedBox(height: 10),
-                                              TextRegular(
-                                                  text: 'Room:',
-                                                  fontSize: 12,
-                                                  color: Colors.black),
-                                              SizedBox(
-                                                height: 35,
-                                                child: TextFormField(
-                                                  onChanged: ((value) {
-                                                    room = value;
-                                                  }),
-                                                  decoration:
-                                                      const InputDecoration(
-                                                          enabledBorder:
-                                                              OutlineInputBorder(
-                                                            borderSide: BorderSide(
-                                                                width: 1,
-                                                                color: Colors
-                                                                    .black), //<-- SEE HERE
-                                                          ),
-                                                          filled: true,
-                                                          fillColor:
-                                                              Colors.white),
-                                                ),
-                                              ),
-                                              const SizedBox(height: 10),
-                                              TextRegular(
-                                                  text: 'Schedule:',
-                                                  fontSize: 12,
-                                                  color: Colors.black),
-                                              Center(
-                                                child: SizedBox(
-                                                  height: 50,
-                                                  width: 200,
-                                                  child: CupertinoDatePicker(
-                                                    mode:
-                                                        CupertinoDatePickerMode
-                                                            .time,
-                                                    initialDateTime:
-                                                        DateTime.now(),
-                                                    onDateTimeChanged:
-                                                        (DateTime newDateTime) {
-                                                      print(newDateTime.hour);
-                                                      print(newDateTime.minute);
-                                                      print(newDateTime.second);
-
-                                                      setState(() {
-                                                        from = (newDateTime
-                                                                    .hour +
-                                                                newDateTime
-                                                                    .minute +
-                                                                newDateTime
-                                                                    .second)
-                                                            .toString();
-                                                      });
-
-                                                      // Handle the change
-                                                    },
-                                                  ),
-                                                ),
-                                              ),
-                                              Center(
                                                 child: Padding(
                                                   padding:
                                                       const EdgeInsets.only(
-                                                          top: 10, bottom: 10),
-                                                  child: TextRegular(
-                                                      text: 'to',
-                                                      fontSize: 12,
-                                                      color: Colors.black),
-                                                ),
-                                              ),
-                                              Center(
-                                                child: SizedBox(
-                                                  height: 50,
-                                                  width: 200,
-                                                  child: CupertinoDatePicker(
-                                                    mode:
-                                                        CupertinoDatePickerMode
-                                                            .time,
-                                                    initialDateTime:
-                                                        DateTime.now(),
-                                                    onDateTimeChanged:
-                                                        (DateTime newDateTime) {
-                                                      setState(() {
-                                                        to = (newDateTime.hour +
-                                                                newDateTime
-                                                                    .minute +
-                                                                newDateTime
-                                                                    .second)
-                                                            .toString();
-                                                      });
-                                                      // Handle the change
-                                                    },
+                                                          left: 15, right: 15),
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      const SizedBox(
+                                                        height: 20,
+                                                      ),
+                                                      TextBold(
+                                                          text:
+                                                              'Adding Schedule',
+                                                          fontSize: 18,
+                                                          color: Colors.black),
+                                                      const SizedBox(
+                                                        height: 20,
+                                                      ),
+                                                      TextRegular(
+                                                          text:
+                                                              'Class name/code:',
+                                                          fontSize: 12,
+                                                          color: Colors.black),
+                                                      SizedBox(
+                                                        height: 35,
+                                                        child: TextFormField(
+                                                          onChanged: ((value) {
+                                                            className = value;
+                                                          }),
+                                                          decoration:
+                                                              const InputDecoration(
+                                                                  enabledBorder:
+                                                                      OutlineInputBorder(
+                                                                    borderSide: BorderSide(
+                                                                        width:
+                                                                            1,
+                                                                        color: Colors
+                                                                            .black), //<-- SEE HERE
+                                                                  ),
+                                                                  filled: true,
+                                                                  fillColor:
+                                                                      Colors
+                                                                          .white),
+                                                        ),
+                                                      ),
+                                                      const SizedBox(
+                                                          height: 10),
+                                                      TextRegular(
+                                                          text: 'Room:',
+                                                          fontSize: 12,
+                                                          color: Colors.black),
+                                                      SizedBox(
+                                                        height: 35,
+                                                        child: TextFormField(
+                                                          onChanged: ((value) {
+                                                            room = value;
+                                                          }),
+                                                          decoration:
+                                                              const InputDecoration(
+                                                                  enabledBorder:
+                                                                      OutlineInputBorder(
+                                                                    borderSide: BorderSide(
+                                                                        width:
+                                                                            1,
+                                                                        color: Colors
+                                                                            .black), //<-- SEE HERE
+                                                                  ),
+                                                                  filled: true,
+                                                                  fillColor:
+                                                                      Colors
+                                                                          .white),
+                                                        ),
+                                                      ),
+                                                      const SizedBox(
+                                                          height: 10),
+                                                      TextRegular(
+                                                          text: 'Schedule:',
+                                                          fontSize: 12,
+                                                          color: Colors.black),
+                                                      Center(
+                                                        child: SizedBox(
+                                                          height: 50,
+                                                          width: 200,
+                                                          child:
+                                                              CupertinoDatePicker(
+                                                            mode:
+                                                                CupertinoDatePickerMode
+                                                                    .time,
+                                                            initialDateTime:
+                                                                DateTime.now(),
+                                                            onDateTimeChanged:
+                                                                (DateTime
+                                                                    newDateTime) {
+                                                              setState(() {
+                                                                from =
+                                                                    "${newDateTime.hour}:${newDateTime.minute}:${newDateTime.second}";
+                                                              });
+
+                                                              print(from);
+
+                                                              // Handle the change
+                                                            },
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      Center(
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .only(
+                                                                  top: 10,
+                                                                  bottom: 10),
+                                                          child: TextRegular(
+                                                              text: 'to',
+                                                              fontSize: 12,
+                                                              color:
+                                                                  Colors.black),
+                                                        ),
+                                                      ),
+                                                      Center(
+                                                        child: SizedBox(
+                                                          height: 50,
+                                                          width: 200,
+                                                          child:
+                                                              CupertinoDatePicker(
+                                                            mode:
+                                                                CupertinoDatePickerMode
+                                                                    .time,
+                                                            initialDateTime:
+                                                                DateTime.now(),
+                                                            onDateTimeChanged:
+                                                                (DateTime
+                                                                    newDateTime) {
+                                                              setState(() {
+                                                                to =
+                                                                    "${newDateTime.hour}:${newDateTime.minute}:${newDateTime.second}";
+                                                              });
+                                                              // Handle the change
+                                                            },
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      const SizedBox(
+                                                          height: 30),
+                                                      Center(
+                                                        child: MaterialButton(
+                                                            shape:
+                                                                RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          5),
+                                                            ),
+                                                            color: greenAccet,
+                                                            minWidth: 150,
+                                                            height: 40,
+                                                            child: TextRegular(
+                                                                text: 'Done',
+                                                                fontSize: 14,
+                                                                color: Colors
+                                                                    .white),
+                                                            onPressed: () {
+                                                              final id = db
+                                                                  .collection(
+                                                                      widget
+                                                                          .label)
+                                                                  .doc()
+                                                                  .id;
+                                                              db
+                                                                  .collection(
+                                                                      widget
+                                                                          .label)
+                                                                  .doc(id)
+                                                                  .set({
+                                                                'className':
+                                                                    className,
+                                                                'room': room,
+                                                                'from': from,
+                                                                'to': to,
+                                                                'id': id
+                                                              });
+                                                              Navigator.of(
+                                                                      context)
+                                                                  .pushReplacement(
+                                                                      MaterialPageRoute(
+                                                                          builder: (context) =>
+                                                                              HomeScreen()));
+
+                                                              Fluttertoast
+                                                                  .showToast(
+                                                                      msg:
+                                                                          'Schedule added!');
+                                                            }),
+                                                      ),
+                                                    ],
                                                   ),
                                                 ),
                                               ),
-                                              const SizedBox(height: 30),
-                                              Center(
-                                                child: MaterialButton(
-                                                    shape:
-                                                        RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              5),
-                                                    ),
-                                                    color: greenAccet,
-                                                    minWidth: 150,
-                                                    height: 40,
-                                                    child: TextRegular(
-                                                        text: 'Done',
-                                                        fontSize: 14,
-                                                        color: Colors.white),
-                                                    onPressed: () {
-                                                      Navigator.of(context)
-                                                          .pushReplacement(
-                                                              MaterialPageRoute(
-                                                                  builder:
-                                                                      (context) =>
-                                                                          HomeScreen()));
+                                            );
+                                          }));
+                                        });
+                                  },
+                                  icon: const Icon(
+                                    Icons.add_circle_outline_rounded,
+                                  ))
+                            ],
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: SizedBox(
+                          child: ListView.separated(
+                              separatorBuilder: ((context, index) {
+                                return const Divider();
+                              }),
+                              itemCount: classNames.length,
+                              itemBuilder: ((context, index) {
+                                return Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(10, 0, 10, 5),
+                                  child: Row(
+                                    children: [
+                                      IconButton(
+                                        onPressed: () {
+                                          db
+                                              .collection(widget.label)
+                                              .doc(ids[index])
+                                              .delete();
+                                          Navigator.of(context).pushReplacement(
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      HomeScreen()));
 
-                                                      Fluttertoast.showToast(
-                                                          msg:
-                                                              'Schedule added!');
-                                                    }),
-                                              ),
-                                            ],
-                                          ),
+                                          Fluttertoast.showToast(
+                                              msg: 'Deleted succesfully!');
+                                        },
+                                        icon: const Icon(Icons.delete,
+                                            color: Colors.red),
+                                      ),
+                                      TextRegular(
+                                          text: rooms[index],
+                                          fontSize: 12,
+                                          color: Colors.black),
+                                      const SizedBox(
+                                        width: 10,
+                                      ),
+                                      SizedBox(
+                                        width: 130,
+                                        child: Text(
+                                          classNames[index],
+                                          overflow: TextOverflow.ellipsis,
+                                          style: const TextStyle(
+                                              fontSize: 12,
+                                              color: Colors.black,
+                                              fontFamily: 'QRegular'),
                                         ),
                                       ),
-                                    );
-                                  }));
-                                });
-                          },
-                          icon: const Icon(
-                            Icons.add_circle_outline_rounded,
-                          ))
+                                      const Expanded(
+                                        child: SizedBox(
+                                          width: 10,
+                                        ),
+                                      ),
+                                      TextRegular(
+                                          text:
+                                              '${froms[index]} - ${tos[index]}',
+                                          fontSize: 12,
+                                          color: Colors.black),
+                                      const SizedBox(
+                                        width: 5,
+                                      ),
+                                      const Icon(
+                                        Icons.notifications,
+                                        color: Colors.grey,
+                                        size: 18,
+                                      )
+                                    ],
+                                  ),
+                                );
+                              })),
+                        ),
+                      ),
                     ],
                   ),
                 ),
               ),
-              Expanded(
-                child: SizedBox(
-                  child: Padding(
-                    padding: const EdgeInsets.only(bottom: 10),
-                    child: ListView.separated(
-                        itemCount: 50,
-                        separatorBuilder: ((context, index) {
-                          return const Divider(
-                            color: Colors.grey,
-                          );
-                        }),
-                        itemBuilder: ((context, index) {
-                          return Padding(
-                            padding: const EdgeInsets.fromLTRB(10, 0, 10, 5),
-                            child: Row(
-                              children: [
-                                TextRegular(
-                                    text: 'Room $index',
-                                    fontSize: 12,
-                                    color: Colors.black),
-                                const SizedBox(
-                                  width: 10,
-                                ),
-                                const SizedBox(
-                                  width: 150,
-                                  child: Text(
-                                    'Lorem Ipsum Lorem Ipsum Lorem Ipsum',
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                        fontSize: 12,
-                                        color: Colors.black,
-                                        fontFamily: 'QRegular'),
-                                  ),
-                                ),
-                                const Expanded(
-                                  child: SizedBox(
-                                    width: 10,
-                                  ),
-                                ),
-                                TextRegular(
-                                    text: '7:30AM - 9:00AM',
-                                    fontSize: 12,
-                                    color: Colors.black),
-                                const SizedBox(
-                                  width: 5,
-                                ),
-                                const Icon(
-                                  Icons.notifications,
-                                  color: Colors.grey,
-                                  size: 18,
-                                )
-                              ],
-                            ),
-                          );
-                        })),
-                  ),
-                ),
-              )
-            ],
-          ),
-        ),
-      ),
-    );
+            ),
+          )
+        : Padding(
+            padding: const EdgeInsets.only(top: 20, bottom: 20),
+            child: Center(
+              child: CircularProgressIndicator(
+                color: primary,
+              ),
+            ),
+          );
   }
 }

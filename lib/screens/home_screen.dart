@@ -1,9 +1,7 @@
 import 'package:class_scheduling_app/utils/colors.dart';
 import 'package:class_scheduling_app/widgets/class_card.dart';
 import 'package:class_scheduling_app/widgets/text_widget.dart';
-import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
-import 'package:toggle_list/toggle_list.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
