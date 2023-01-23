@@ -38,6 +38,9 @@ dependencies:
   cupertino_icons: ^1.0.2
   expandable:
   toggle_list:
+  fluttertoast:
+  localstore:
+  get_storage:
 
 dev_dependencies:
   flutter_test:

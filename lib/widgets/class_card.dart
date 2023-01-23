@@ -1,5 +1,6 @@
 import 'package:class_scheduling_app/utils/colors.dart';
 import 'package:class_scheduling_app/widgets/text_widget.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ClassCard extends StatelessWidget {
@@ -41,7 +42,7 @@ class ClassCard extends StatelessWidget {
                                 builder: (context) {
                                   return Dialog(
                                     child: Container(
-                                      height: 320,
+                                      height: 420,
                                       decoration: BoxDecoration(
                                         color: primary,
                                         borderRadius: BorderRadius.circular(5),
@@ -113,56 +114,47 @@ class ClassCard extends StatelessWidget {
                                                 text: 'Schedule:',
                                                 fontSize: 12,
                                                 color: Colors.black),
-                                            Row(
-                                              children: [
-                                                SizedBox(
-                                                  height: 35,
-                                                  width: 100,
-                                                  child: TextFormField(
-                                                    onChanged: ((value) {}),
-                                                    decoration:
-                                                        const InputDecoration(
-                                                            enabledBorder:
-                                                                OutlineInputBorder(
-                                                              borderSide: BorderSide(
-                                                                  width: 1,
-                                                                  color: Colors
-                                                                      .black), //<-- SEE HERE
-                                                            ),
-                                                            filled: true,
-                                                            fillColor:
-                                                                Colors.white),
-                                                  ),
+                                            Center(
+                                              child: SizedBox(
+                                                height: 50,
+                                                width: 200,
+                                                child: CupertinoDatePicker(
+                                                  mode: CupertinoDatePickerMode
+                                                      .time,
+                                                  initialDateTime:
+                                                      DateTime.now(),
+                                                  onDateTimeChanged:
+                                                      (DateTime newDateTime) {
+                                                    // Handle the change
+                                                  },
                                                 ),
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          left: 10, right: 10),
-                                                  child: TextRegular(
-                                                      text: 'to',
-                                                      fontSize: 12,
-                                                      color: Colors.black),
+                                              ),
+                                            ),
+                                            Center(
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    top: 10, bottom: 10),
+                                                child: TextRegular(
+                                                    text: 'to',
+                                                    fontSize: 12,
+                                                    color: Colors.black),
+                                              ),
+                                            ),
+                                            Center(
+                                              child: SizedBox(
+                                                height: 50,
+                                                width: 200,
+                                                child: CupertinoDatePicker(
+                                                  mode: CupertinoDatePickerMode
+                                                      .time,
+                                                  initialDateTime:
+                                                      DateTime.now(),
+                                                  onDateTimeChanged:
+                                                      (DateTime newDateTime) {
+                                                    // Handle the change
+                                                  },
                                                 ),
-                                                SizedBox(
-                                                  height: 35,
-                                                  width: 100,
-                                                  child: TextFormField(
-                                                    onChanged: ((value) {}),
-                                                    decoration:
-                                                        const InputDecoration(
-                                                            enabledBorder:
-                                                                OutlineInputBorder(
-                                                              borderSide: BorderSide(
-                                                                  width: 1,
-                                                                  color: Colors
-                                                                      .black), //<-- SEE HERE
-                                                            ),
-                                                            filled: true,
-                                                            fillColor:
-                                                                Colors.white),
-                                                  ),
-                                                ),
-                                              ],
+                                              ),
                                             ),
                                             const SizedBox(height: 30),
                                             Center(
