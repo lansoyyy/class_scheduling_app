@@ -6,8 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:toggle_list/toggle_list.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,6 +14,9 @@ class HomeScreen extends StatelessWidget {
         child: Column(
           children: [
             Container(
+              height: 100,
+              width: double.infinity,
+              color: primary,
               child: Padding(
                 padding: const EdgeInsets.only(left: 20, bottom: 10),
                 child: Align(
@@ -26,11 +27,8 @@ class HomeScreen extends StatelessWidget {
                       color: Colors.black),
                 ),
               ),
-              height: 100,
-              width: double.infinity,
-              color: primary,
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             ClassCard(label: 'Monday'),
