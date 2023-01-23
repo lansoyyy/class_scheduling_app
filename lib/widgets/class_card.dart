@@ -24,6 +24,9 @@ class ClassCard extends StatelessWidget {
           child: Column(
             children: [
               Container(
+                height: 50,
+                color: primary,
+                width: double.infinity,
                 child: Padding(
                   padding: const EdgeInsets.only(left: 10),
                   child: Row(
@@ -32,16 +35,165 @@ class ClassCard extends StatelessWidget {
                       TextRegular(
                           text: label, fontSize: 28, color: Colors.black),
                       IconButton(
-                          onPressed: () {},
-                          icon: Icon(
+                          onPressed: () {
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return Dialog(
+                                    child: Container(
+                                      height: 320,
+                                      decoration: BoxDecoration(
+                                        color: primary,
+                                        borderRadius: BorderRadius.circular(5),
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 15, right: 15),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            const SizedBox(
+                                              height: 20,
+                                            ),
+                                            TextBold(
+                                                text: 'Adding Schedule',
+                                                fontSize: 18,
+                                                color: Colors.black),
+                                            const SizedBox(
+                                              height: 20,
+                                            ),
+                                            TextRegular(
+                                                text: 'Class name/code:',
+                                                fontSize: 12,
+                                                color: Colors.black),
+                                            SizedBox(
+                                              height: 35,
+                                              child: TextFormField(
+                                                onChanged: ((value) {}),
+                                                decoration:
+                                                    const InputDecoration(
+                                                        enabledBorder:
+                                                            OutlineInputBorder(
+                                                          borderSide: BorderSide(
+                                                              width: 1,
+                                                              color: Colors
+                                                                  .black), //<-- SEE HERE
+                                                        ),
+                                                        filled: true,
+                                                        fillColor:
+                                                            Colors.white),
+                                              ),
+                                            ),
+                                            const SizedBox(height: 10),
+                                            TextRegular(
+                                                text: 'Room:',
+                                                fontSize: 12,
+                                                color: Colors.black),
+                                            SizedBox(
+                                              height: 35,
+                                              child: TextFormField(
+                                                onChanged: ((value) {}),
+                                                decoration:
+                                                    const InputDecoration(
+                                                        enabledBorder:
+                                                            OutlineInputBorder(
+                                                          borderSide: BorderSide(
+                                                              width: 1,
+                                                              color: Colors
+                                                                  .black), //<-- SEE HERE
+                                                        ),
+                                                        filled: true,
+                                                        fillColor:
+                                                            Colors.white),
+                                              ),
+                                            ),
+                                            const SizedBox(height: 10),
+                                            TextRegular(
+                                                text: 'Schedule:',
+                                                fontSize: 12,
+                                                color: Colors.black),
+                                            Row(
+                                              children: [
+                                                SizedBox(
+                                                  height: 35,
+                                                  width: 100,
+                                                  child: TextFormField(
+                                                    onChanged: ((value) {}),
+                                                    decoration:
+                                                        const InputDecoration(
+                                                            enabledBorder:
+                                                                OutlineInputBorder(
+                                                              borderSide: BorderSide(
+                                                                  width: 1,
+                                                                  color: Colors
+                                                                      .black), //<-- SEE HERE
+                                                            ),
+                                                            filled: true,
+                                                            fillColor:
+                                                                Colors.white),
+                                                  ),
+                                                ),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 10, right: 10),
+                                                  child: TextRegular(
+                                                      text: 'to',
+                                                      fontSize: 12,
+                                                      color: Colors.black),
+                                                ),
+                                                SizedBox(
+                                                  height: 35,
+                                                  width: 100,
+                                                  child: TextFormField(
+                                                    onChanged: ((value) {}),
+                                                    decoration:
+                                                        const InputDecoration(
+                                                            enabledBorder:
+                                                                OutlineInputBorder(
+                                                              borderSide: BorderSide(
+                                                                  width: 1,
+                                                                  color: Colors
+                                                                      .black), //<-- SEE HERE
+                                                            ),
+                                                            filled: true,
+                                                            fillColor:
+                                                                Colors.white),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            const SizedBox(height: 30),
+                                            Center(
+                                              child: MaterialButton(
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            5),
+                                                  ),
+                                                  color: greenAccet,
+                                                  minWidth: 150,
+                                                  height: 40,
+                                                  child: TextRegular(
+                                                      text: 'Done',
+                                                      fontSize: 14,
+                                                      color: Colors.white),
+                                                  onPressed: () {}),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                });
+                          },
+                          icon: const Icon(
                             Icons.add_circle_outline_rounded,
                           ))
                     ],
                   ),
                 ),
-                height: 50,
-                color: primary,
-                width: double.infinity,
               ),
               Expanded(
                 child: SizedBox(
@@ -50,7 +202,7 @@ class ClassCard extends StatelessWidget {
                     child: ListView.separated(
                         itemCount: 50,
                         separatorBuilder: ((context, index) {
-                          return Divider(
+                          return const Divider(
                             color: Colors.grey,
                           );
                         }),
@@ -60,13 +212,13 @@ class ClassCard extends StatelessWidget {
                             child: Row(
                               children: [
                                 TextRegular(
-                                    text: 'Room ${index}',
+                                    text: 'Room $index',
                                     fontSize: 12,
                                     color: Colors.black),
-                                SizedBox(
+                                const SizedBox(
                                   width: 10,
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   width: 150,
                                   child: Text(
                                     'Lorem Ipsum Lorem Ipsum Lorem Ipsum',
@@ -77,7 +229,7 @@ class ClassCard extends StatelessWidget {
                                         fontFamily: 'QRegular'),
                                   ),
                                 ),
-                                Expanded(
+                                const Expanded(
                                   child: SizedBox(
                                     width: 10,
                                   ),
@@ -86,10 +238,10 @@ class ClassCard extends StatelessWidget {
                                     text: '7:30AM - 9:00AM',
                                     fontSize: 12,
                                     color: Colors.black),
-                                SizedBox(
+                                const SizedBox(
                                   width: 5,
                                 ),
-                                Icon(
+                                const Icon(
                                   Icons.notifications,
                                   color: Colors.grey,
                                   size: 18,
