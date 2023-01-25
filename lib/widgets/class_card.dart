@@ -3,6 +3,7 @@ import 'package:class_scheduling_app/utils/colors.dart';
 import 'package:class_scheduling_app/widgets/text_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_alarm_clock/flutter_alarm_clock.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:localstore/localstore.dart';
 
@@ -56,11 +57,15 @@ class _ClassCardState extends State<ClassCard> {
         ids.add(element['id']);
       }
     }
+    print(items);
 
     setState(() {
       hasLoaded = true;
     });
   }
+
+  late int hour;
+  late int minute;
 
   @override
   Widget build(BuildContext context) {
@@ -206,7 +211,14 @@ class _ClassCardState extends State<ClassCard> {
                                                                     newDateTime) {
                                                               setState(() {
                                                                 from =
-                                                                    "${newDateTime.hour}:${newDateTime.minute}:${newDateTime.second}";
+                                                                    "${newDateTime.hour}:${newDateTime.minute}";
+
+                                                                hour =
+                                                                    newDateTime
+                                                                        .hour;
+                                                                minute =
+                                                                    newDateTime
+                                                                        .minute;
                                                               });
 
                                                               print(from);
@@ -292,6 +304,11 @@ class _ClassCardState extends State<ClassCard> {
                                                                 'to': to,
                                                                 'id': id
                                                               });
+
+                                                              FlutterAlarmClock
+                                                                  .createAlarm(
+                                                                      hour,
+                                                                      minute);
                                                               Navigator.of(
                                                                       context)
                                                                   .pushReplacement(
@@ -358,7 +375,7 @@ class _ClassCardState extends State<ClassCard> {
                                         width: 10,
                                       ),
                                       SizedBox(
-                                        width: 130,
+                                        width: 100,
                                         child: Text(
                                           classNames[index],
                                           overflow: TextOverflow.ellipsis,

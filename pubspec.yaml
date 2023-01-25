@@ -41,6 +41,8 @@ dependencies:
   fluttertoast:
   localstore:
   get_storage:
+  flutter_local_notifications:
+  flutter_alarm_clock:
 
 dev_dependencies:
   flutter_test:
