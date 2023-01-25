@@ -308,7 +308,9 @@ class _ClassCardState extends State<ClassCard> {
                                                               FlutterAlarmClock
                                                                   .createAlarm(
                                                                       hour,
-                                                                      minute);
+                                                                      minute,
+                                                                      title:
+                                                                          className);
                                                               Navigator.of(
                                                                       context)
                                                                   .pushReplacement(
