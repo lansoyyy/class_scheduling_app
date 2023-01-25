@@ -310,7 +310,7 @@ class _ClassCardState extends State<ClassCard> {
                                                                       hour,
                                                                       minute,
                                                                       title:
-                                                                          className);
+                                                                          'Class Schedule: ${className} in ${room}');
                                                               Navigator.of(
                                                                       context)
                                                                   .pushReplacement(
