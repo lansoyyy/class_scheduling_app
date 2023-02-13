@@ -42,7 +42,7 @@ dependencies:
   localstore:
   get_storage:
   flutter_local_notifications:
-  flutter_alarm_clock:
+  flutter_alarm_clock: ^0.0.1
 
 dev_dependencies:
   flutter_test:
