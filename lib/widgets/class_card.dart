@@ -1,9 +1,9 @@
+import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:class_scheduling_app/screens/home_screen.dart';
 import 'package:class_scheduling_app/utils/colors.dart';
 import 'package:class_scheduling_app/widgets/text_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_alarm_clock/flutter_alarm_clock.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:localstore/localstore.dart';
 
@@ -62,6 +62,34 @@ class _ClassCardState extends State<ClassCard> {
     setState(() {
       hasLoaded = true;
     });
+  }
+
+  void _setupAlarm(hour, minute, int day) {
+    try {
+      final now = DateTime.now();
+      final monday = now.add(Duration(days: (day - now.weekday) % 7));
+      final startTime =
+          DateTime(monday.year, monday.month, monday.day, hour, minute, 0);
+      const interval = Duration(days: 7);
+
+      AndroidAlarmManager.periodic(
+        interval,
+        minute, // ID of the alarm
+        _onAlarmFired,
+        startAt: startTime,
+        exact: true,
+        wakeup: true,
+      );
+
+      print('Alarm set for ${startTime.toString()}');
+    } catch (e) {
+      print('${e}asd');
+    }
+  }
+
+  Future<void> _onAlarmFired() async {
+    // Your code here
+    print('hi');
   }
 
   late int hour;
@@ -285,6 +313,10 @@ class _ClassCardState extends State<ClassCard> {
                                                                 color: Colors
                                                                     .white),
                                                             onPressed: () {
+                                                              print(hour);
+                                                              print(minute);
+                                                              print(
+                                                                  widget.label);
                                                               final id = db
                                                                   .collection(
                                                                       widget
@@ -305,13 +337,63 @@ class _ClassCardState extends State<ClassCard> {
                                                                 'id': id
                                                               });
 
-                                                              FlutterAlarmClock
-                                                                  .createAlarm(
-                                                                hour,
-                                                                minute,
-                                                                title:
-                                                                    'Class Schedule: $className in $room',
-                                                              );
+                                                              try {
+                                                                if (widget
+                                                                        .label ==
+                                                                    'Monday') {
+                                                                  _setupAlarm(
+                                                                      hour,
+                                                                      minute,
+                                                                      1);
+                                                                } else if (widget
+                                                                        .label ==
+                                                                    'Tuesday') {
+                                                                  _setupAlarm(
+                                                                      hour,
+                                                                      minute,
+                                                                      2);
+                                                                } else if (widget
+                                                                        .label ==
+                                                                    'Wednesday') {
+                                                                  _setupAlarm(
+                                                                      hour,
+                                                                      minute,
+                                                                      3);
+                                                                } else if (widget
+                                                                        .label ==
+                                                                    'Thursday') {
+                                                                  _setupAlarm(
+                                                                      hour,
+                                                                      minute,
+                                                                      4);
+                                                                } else if (widget
+                                                                        .label ==
+                                                                    'Friday') {
+                                                                  _setupAlarm(
+                                                                      hour,
+                                                                      minute,
+                                                                      5);
+                                                                } else if (widget
+                                                                        .label ==
+                                                                    'Saturday') {
+                                                                  _setupAlarm(
+                                                                      hour,
+                                                                      minute,
+                                                                      6);
+                                                                } else if (widget
+                                                                        .label ==
+                                                                    'Sunday') {
+                                                                  _setupAlarm(
+                                                                      hour,
+                                                                      minute,
+                                                                      7);
+                                                                }
+                                                                print(
+                                                                    'success');
+                                                              } catch (e) {
+                                                                print(
+                                                                    '$e error');
+                                                              }
                                                               Navigator.of(
                                                                       context)
                                                                   .pushReplacement(
