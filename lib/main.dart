@@ -1,4 +1,5 @@
-import 'package:class_scheduling_app/screens/home_screen.dart';
+import 'package:calendar_view/calendar_view.dart';
+import 'package:class_scheduling_app/screens/calendar_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -9,8 +10,11 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: HomeScreen(),
+    return CalendarControllerProvider(
+      controller: EventController(),
+      child: const MaterialApp(
+        home: CalendarScreen(),
+      ),
     );
   }
 }
