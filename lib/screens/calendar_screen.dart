@@ -11,16 +11,6 @@ class CalendarScreen extends StatefulWidget {
 }
 
 class _CalendarScreenState extends State<CalendarScreen> {
-  final event = CalendarEventData(
-      date: DateTime(2023, 2, 25),
-      title: 'Sample',
-      endTime: DateTime(2023, 2, 26),
-      color: Colors.blue,
-      startTime: DateTime(2023, 2, 25),
-      endDate: DateTime(2023, 2, 26),
-      event: 'qwe',
-      description: 'asd');
-
   // List<DateTime> mondaysIn2023 = [];
   @override
   void initState() {
@@ -49,6 +39,18 @@ class _CalendarScreenState extends State<CalendarScreen> {
   List<String> ids = [];
 
   var hasLoaded = false;
+
+  final List<CalendarEventData> _events = [
+    CalendarEventData(
+        date: DateTime(2023, 2, 25),
+        title: 'Sample',
+        endTime: DateTime(2023, 2, 26, 4, 30),
+        color: Colors.blue,
+        startTime: DateTime(2023, 2, 25, 1, 30),
+        endDate: DateTime(2023, 2, 26),
+        event: 'qwe',
+        description: 'asd')
+  ];
 
   getData() async {
     final items = await db.collection('Data').get();
@@ -89,7 +91,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
       floatingActionButton: FloatingActionButton(
           backgroundColor: Colors.blue,
           onPressed: (() {
-            CalendarControllerProvider.of(context).controller.add(event);
+            CalendarControllerProvider.of(context).controller.addAll(_events);
             showDialog(
                 context: context,
                 builder: (context) {
