@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return CalendarControllerProvider(
       controller: EventController(),
-      child: const MaterialApp(
+      child: MaterialApp(
         home: CalendarScreen(),
       ),
     );

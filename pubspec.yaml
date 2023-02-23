@@ -40,6 +40,8 @@ dependencies:
   localstore:
   get_storage:
   calendar_view:
+  table_calendar:
+  shared_preferences:
 
 dev_dependencies:
   flutter_test:
