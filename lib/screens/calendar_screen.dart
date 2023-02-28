@@ -222,7 +222,28 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                         text: 'Done',
                                         fontSize: 14,
                                         color: Colors.white),
-                                    onPressed: () {}),
+                                    onPressed: () {
+                                      final id =
+                                          db.collection('Sched').doc().id;
+                                      db.collection('Sched').doc(id).set({
+                                        'event': className,
+                                        'startMonth': startingMonth,
+                                        'startDay': startingDate,
+                                        'startHour': startHour,
+                                        'startMinute': startMinutes,
+                                        'endHour': endHour,
+                                        'endMinute': endMinutes,
+                                        'id': id
+                                      });
+
+                                      // FlutterAlarmClock
+                                      //     .createAlarm(
+
+                                      //         startHour,
+                                      //         startMinutes,
+                                      //         title:
+                                      //             'Schedule: ${className}');
+                                    }),
                               ),
                             ],
                           ),
