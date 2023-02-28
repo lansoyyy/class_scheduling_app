@@ -28,47 +28,54 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
   final db = Localstore.instance;
 
-  List<String> rooms = [];
+  List<String> names = [];
 
-  List<String> classNames = [];
+  List<int> startMonths = [];
 
-  List<String> froms = [];
+  List<int> startDates = [];
 
-  List<String> tos = [];
+  List<int> startingHours = [];
+
+  List<int> startingMinutes = [];
+
+  List<int> endingHours = [];
+
+  List<int> endingMinutes = [];
 
   List<String> ids = [];
 
   var hasLoaded = false;
 
-  final List<CalendarEventData> _events = [
-    CalendarEventData(
-        date: DateTime(2023, 2, 25),
-        title: 'Sample',
-        endTime: DateTime(2023, 2, 26, 4, 30),
-        color: Colors.blue,
-        startTime: DateTime(2023, 2, 25, 1, 30),
-        endDate: DateTime(2023, 2, 26),
-        event: 'qwe',
-        description: 'asd')
-  ];
+  final List<CalendarEventData> _events = [];
 
   getData() async {
-    final items = await db.collection('Data').get();
+    final items = await db.collection('Sched').get();
 
     if (items != null) {
       List<dynamic> values1 = items.values.toList();
 
-      values1.sort((a, b) => a['from'].compareTo(b['from']));
-
       for (var element in values1) {
-        rooms.add(element['room']);
-        classNames.add(element['className']);
-        froms.add(element['from']);
-        tos.add(element['to']);
+        names.add(element['event']);
+        startMonths.add(element['startMonth']);
+        startDates.add(element['startDay']);
+        startingHours.add(element['startHour']);
+        startingMinutes.add(element['startMinute']);
+        endingHours.add(element['endHour']);
+        endingMinutes.add(element['endMinute']);
+
         ids.add(element['id']);
       }
     }
+
     print(items);
+
+    //  'event': className,
+    //                                     'startMonth': startingMonth,
+    //                                     'startDay': startingDate,
+    //                                     'startHour': startHour,
+    //                                     'startMinute': startMinutes,
+    //                                     'endHour': endHour,
+    //                                     'endMinute': endMinutes,
 
     setState(() {
       hasLoaded = true;
@@ -95,7 +102,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
       floatingActionButton: FloatingActionButton(
           backgroundColor: Colors.blue,
           onPressed: (() {
-            CalendarControllerProvider.of(context).controller.addAll(_events);
             showDialog(
                 context: context,
                 builder: (context) {
@@ -235,6 +241,32 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                         'endMinute': endMinutes,
                                         'id': id
                                       });
+
+                                      _events.add(CalendarEventData(
+                                        date: DateTime(
+                                            2023, startingMonth, startingDate),
+                                        title: className,
+                                        endTime: DateTime(2023, startingMonth,
+                                            startingDate, endHour, endMinutes),
+                                        color: Colors.blue,
+                                        startTime: DateTime(
+                                            2023,
+                                            startingMonth,
+                                            startingDate,
+                                            startHour,
+                                            startMinutes),
+                                        endDate: DateTime(
+                                            2023, startingMonth, startingDate),
+                                      ));
+
+                                      Navigator.of(context).pushReplacement(
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  CalendarScreen()));
+
+                                      CalendarControllerProvider.of(context)
+                                          .controller
+                                          .addAll(_events);
 
                                       // FlutterAlarmClock
                                       //     .createAlarm(
