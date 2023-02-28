@@ -43,6 +43,7 @@ dependencies:
   table_calendar:
   shared_preferences:
   flutter_alarm_clock:
+  locally:
 
 dev_dependencies:
   flutter_test:
