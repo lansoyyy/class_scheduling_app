@@ -287,7 +287,89 @@ class _CalendarScreenState extends State<CalendarScreen> {
             Icons.add,
             color: Colors.white,
           )),
-      body: const WeekView(),
+      body: WeekView(
+        eventTileBuilder: (
+          date,
+          events,
+          boundary,
+          startDuration,
+          endDuration,
+        ) {
+          return GestureDetector(
+            onTap: (() {
+              showDialog(
+                  context: context,
+                  builder: ((context) {
+                    return Dialog(
+                      child: SizedBox(
+                        height: 220,
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(30, 20, 30, 20),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              TextRegular(
+                                  text: 'Event/Task: ${events[0].title}',
+                                  fontSize: 18,
+                                  color: Colors.black),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              TextRegular(
+                                  text: 'Date: ${events[0].date}',
+                                  fontSize: 14,
+                                  color: Colors.black),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              TextRegular(
+                                  text: 'Starting Time: ${events[0].startTime}',
+                                  fontSize: 14,
+                                  color: Colors.black),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              TextRegular(
+                                  text: 'Ending Time: ${events[0].endTime}',
+                                  fontSize: 14,
+                                  color: Colors.black),
+                              const SizedBox(
+                                height: 30,
+                              ),
+                              Center(
+                                child: MaterialButton(
+                                  color: Colors.blue,
+                                  minWidth: 120,
+                                  height: 40,
+                                  onPressed: (() {
+                                    Navigator.of(context).pop();
+                                  }),
+                                  child: TextRegular(
+                                      text: 'Close',
+                                      fontSize: 12,
+                                      color: Colors.white),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                  }));
+            }),
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.blue,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Center(
+                child: TextRegular(
+                    text: events[0].title, fontSize: 14, color: Colors.white),
+              ),
+            ),
+          );
+        },
+      ),
     );
   }
 }
