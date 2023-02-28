@@ -77,8 +77,12 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
   late int startingDate;
   late int startingMonth;
-  late int endDate;
-  late int endMonth;
+
+  late int startHour;
+  late int startMinutes;
+
+  late int endHour;
+  late int endMinutes;
 
   @override
   Widget build(BuildContext context) {
@@ -116,7 +120,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                   fontSize: 18,
                                   color: Colors.black),
                               const SizedBox(
-                                height: 20,
+                                height: 10,
                               ),
                               TextRegular(
                                   text: 'Event name',
@@ -162,6 +166,23 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                 ),
                               ),
                               Center(
+                                child: SizedBox(
+                                  height: 50,
+                                  width: 300,
+                                  child: CupertinoDatePicker(
+                                    mode: CupertinoDatePickerMode.time,
+                                    initialDateTime: DateTime.now(),
+                                    onDateTimeChanged: (DateTime newDateTime) {
+                                      setState(() {
+                                        startHour = newDateTime.hour;
+                                        startMinutes = newDateTime.minute;
+                                      });
+                                      // Handle the change
+                                    },
+                                  ),
+                                ),
+                              ),
+                              Center(
                                 child: Padding(
                                   padding: const EdgeInsets.only(
                                       top: 10, bottom: 10),
@@ -176,12 +197,12 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                   height: 50,
                                   width: 300,
                                   child: CupertinoDatePicker(
-                                    mode: CupertinoDatePickerMode.date,
+                                    mode: CupertinoDatePickerMode.time,
                                     initialDateTime: DateTime.now(),
                                     onDateTimeChanged: (DateTime newDateTime) {
                                       setState(() {
-                                        endMonth = newDateTime.month;
-                                        endDate = newDateTime.day;
+                                        endHour = newDateTime.hour;
+                                        endMinutes = newDateTime.minute;
                                       });
                                       // Handle the change
                                     },
