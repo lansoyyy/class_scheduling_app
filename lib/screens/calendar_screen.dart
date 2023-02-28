@@ -65,9 +65,21 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
         ids.add(element['id']);
       }
-    }
 
-    print(items);
+      for (int i = 0; i < names.length; i++) {
+        _events.add(CalendarEventData(
+            date: DateTime(2023, startMonths[i], startDates[i]),
+            title: names[i],
+            endTime: DateTime(2023, startMonths[i], startDates[i],
+                endingHours[i], endingMinutes[i]),
+            color: Colors.blue,
+            startTime: DateTime(2023, startMonths[i], startDates[i],
+                startingHours[i], startingMinutes[i]),
+            endDate: DateTime(2023, startMonths[i], startDates[i])));
+      }
+
+      CalendarControllerProvider.of(context).controller.addAll(_events);
+    }
 
     //  'event': className,
     //                                     'startMonth': startingMonth,
@@ -93,6 +105,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print(_events);
     return Scaffold(
       appBar: AppBar(
         title: TextRegular(
@@ -247,35 +260,10 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                           'id': id
                                         });
 
-                                        _events.add(CalendarEventData(
-                                          date: DateTime(2023, startingMonth,
-                                              startingDate),
-                                          title: className,
-                                          endTime: DateTime(
-                                              2023,
-                                              startingMonth,
-                                              startingDate,
-                                              endHour,
-                                              endMinutes),
-                                          color: Colors.blue,
-                                          startTime: DateTime(
-                                              2023,
-                                              startingMonth,
-                                              startingDate,
-                                              startHour,
-                                              startMinutes),
-                                          endDate: DateTime(2023, startingMonth,
-                                              startingDate),
-                                        ));
-
                                         Navigator.of(context).pushReplacement(
                                             MaterialPageRoute(
                                                 builder: (context) =>
                                                     CalendarScreen()));
-
-                                        CalendarControllerProvider.of(context)
-                                            .controller
-                                            .addAll(_events);
 
                                         // FlutterAlarmClock
                                         //     .createAlarm(
