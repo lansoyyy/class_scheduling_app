@@ -3,6 +3,7 @@ import 'package:class_scheduling_app/utils/colors.dart';
 import 'package:class_scheduling_app/widgets/text_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_alarm_clock/flutter_alarm_clock.dart';
 import 'package:localstore/localstore.dart';
 
 class CalendarScreen extends StatefulWidget {
@@ -260,18 +261,14 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                           'id': id
                                         });
 
+                                        FlutterAlarmClock.createAlarm(
+                                            startHour, startMinutes,
+                                            title: 'Schedule: $className');
+
                                         Navigator.of(context).pushReplacement(
                                             MaterialPageRoute(
                                                 builder: (context) =>
                                                     CalendarScreen()));
-
-                                        // FlutterAlarmClock
-                                        //     .createAlarm(
-
-                                        //         startHour,
-                                        //         startMinutes,
-                                        //         title:
-                                        //             'Schedule: ${className}');
                                       }),
                                 ),
                               ],
