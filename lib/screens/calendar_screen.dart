@@ -106,7 +106,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print(_events);
     return Scaffold(
       appBar: AppBar(
         title: TextRegular(
@@ -334,17 +333,35 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                 height: 30,
                               ),
                               Center(
-                                child: MaterialButton(
-                                  color: Colors.blue,
-                                  minWidth: 120,
-                                  height: 40,
-                                  onPressed: (() {
-                                    Navigator.of(context).pop();
-                                  }),
-                                  child: TextRegular(
-                                      text: 'Close',
-                                      fontSize: 12,
-                                      color: Colors.white),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    MaterialButton(
+                                      color: Colors.blue,
+                                      minWidth: 120,
+                                      height: 40,
+                                      onPressed: (() {
+                                        Navigator.of(context).pop();
+                                      }),
+                                      child: TextRegular(
+                                          text: 'Close',
+                                          fontSize: 12,
+                                          color: Colors.white),
+                                    ),
+                                    MaterialButton(
+                                      color: Colors.red,
+                                      minWidth: 120,
+                                      height: 40,
+                                      onPressed: (() {
+                                        Navigator.of(context).pop();
+                                      }),
+                                      child: TextRegular(
+                                          text: 'Delete',
+                                          fontSize: 12,
+                                          color: Colors.white),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ],
