@@ -50,6 +50,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
   final List<CalendarEventData> _events = [];
 
   getData() async {
+    _events.clear();
     final items = await db.collection('Sched').get();
 
     if (items != null) {
@@ -69,6 +70,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
       for (int i = 0; i < names.length; i++) {
         _events.add(CalendarEventData(
+            description: ids[i],
             date: DateTime(2023, startMonths[i], startDates[i]),
             title: names[i],
             endTime: DateTime(2023, startMonths[i], startDates[i],
@@ -81,8 +83,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
       CalendarControllerProvider.of(context).controller.addAll(_events);
     }
-
-    print(items);
 
     //  'event': className,
     //                                     'startMonth': startingMonth,
@@ -108,6 +108,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print(_events);
     return RefreshIndicator(
       onRefresh: (() {
         return Navigator.of(context).pushReplacement(
@@ -277,11 +278,6 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                               MaterialPageRoute(
                                                   builder: (context) =>
                                                       CalendarScreen()));
-
-                                          Navigator.of(context).pushReplacement(
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      CalendarScreen()));
                                         }),
                                   ),
                                 ],
@@ -297,124 +293,140 @@ class _CalendarScreenState extends State<CalendarScreen> {
               Icons.add,
               color: Colors.white,
             )),
-        body: WeekView(
-          eventTileBuilder: (
-            date,
-            events,
-            boundary,
-            startDuration,
-            endDuration,
-          ) {
-            return GestureDetector(
-              onTap: (() {
-                showDialog(
-                    context: context,
-                    builder: ((context) {
-                      return Dialog(
-                        child: SizedBox(
-                          height: 220,
-                          child: Padding(
-                            padding: const EdgeInsets.fromLTRB(30, 20, 30, 20),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                TextRegular(
-                                    text: 'Event/Task: ${events[0].title}',
-                                    fontSize: 18,
-                                    color: Colors.black),
-                                const SizedBox(
-                                  height: 5,
-                                ),
-                                TextRegular(
-                                    text: 'Date: ${events[0].date}',
-                                    fontSize: 14,
-                                    color: Colors.black),
-                                const SizedBox(
-                                  height: 5,
-                                ),
-                                TextRegular(
-                                    text:
-                                        'Starting Time: ${events[0].startTime}',
-                                    fontSize: 14,
-                                    color: Colors.black),
-                                const SizedBox(
-                                  height: 5,
-                                ),
-                                TextRegular(
-                                    text: 'Ending Time: ${events[0].endTime}',
-                                    fontSize: 14,
-                                    color: Colors.black),
-                                const SizedBox(
-                                  height: 30,
-                                ),
-                                Center(
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      MaterialButton(
-                                        color: Colors.blue,
-                                        minWidth: 120,
-                                        height: 40,
-                                        onPressed: (() {
-                                          Navigator.of(context).pop();
-                                        }),
-                                        child: TextRegular(
-                                            text: 'Close',
-                                            fontSize: 12,
-                                            color: Colors.white),
-                                      ),
-                                      MaterialButton(
-                                        color: Colors.red,
-                                        minWidth: 120,
-                                        height: 40,
-                                        onPressed: (() {
-                                          db
-                                              .collection('Sched')
-                                              .doc(ids[0])
-                                              .delete();
-                                          _events.removeAt(0);
-
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(SnackBar(
-                                                  content: TextRegular(
-                                                      text:
-                                                          'Deleted Succesfully!',
-                                                      fontSize: 12,
-                                                      color: Colors.white)));
-
-                                          Navigator.of(context).pushReplacement(
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      CalendarScreen()));
-                                        }),
-                                        child: TextRegular(
-                                            text: 'Delete',
-                                            fontSize: 12,
-                                            color: Colors.white),
-                                      ),
-                                    ],
+        body: RefreshIndicator(
+          onRefresh: () {
+            return Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (context) => CalendarScreen()));
+          },
+          child: WeekView(
+            eventTileBuilder: (
+              date,
+              events,
+              boundary,
+              startDuration,
+              endDuration,
+            ) {
+              return GestureDetector(
+                onTap: (() {
+                  showDialog(
+                      context: context,
+                      builder: ((context) {
+                        return Dialog(
+                          child: SizedBox(
+                            height: 220,
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.fromLTRB(30, 20, 30, 20),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  TextRegular(
+                                      text: 'Event/Task: ${events[0].title}',
+                                      fontSize: 18,
+                                      color: Colors.black),
+                                  const SizedBox(
+                                    height: 5,
                                   ),
-                                ),
-                              ],
+                                  TextRegular(
+                                      text: 'Date: ${events[0].date}',
+                                      fontSize: 14,
+                                      color: Colors.black),
+                                  const SizedBox(
+                                    height: 5,
+                                  ),
+                                  TextRegular(
+                                      text:
+                                          'Starting Time: ${events[0].startTime}',
+                                      fontSize: 14,
+                                      color: Colors.black),
+                                  const SizedBox(
+                                    height: 5,
+                                  ),
+                                  TextRegular(
+                                      text: 'Ending Time: ${events[0].endTime}',
+                                      fontSize: 14,
+                                      color: Colors.black),
+                                  const SizedBox(
+                                    height: 30,
+                                  ),
+                                  Center(
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        MaterialButton(
+                                          color: Colors.blue,
+                                          minWidth: 120,
+                                          height: 40,
+                                          onPressed: (() {
+                                            Navigator.of(context).pop();
+                                          }),
+                                          child: TextRegular(
+                                              text: 'Close',
+                                              fontSize: 12,
+                                              color: Colors.white),
+                                        ),
+                                        MaterialButton(
+                                          color: Colors.red,
+                                          minWidth: 120,
+                                          height: 40,
+                                          onPressed: (() {
+                                            db
+                                                .collection('Sched')
+                                                .doc(events[0].description)
+                                                .delete();
+
+                                            CalendarControllerProvider.of(
+                                                    context)
+                                                .controller
+                                                .remove(events[0]);
+
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(SnackBar(
+                                                    content: TextRegular(
+                                                        text:
+                                                            'Task Deleted Succesfully!',
+                                                        fontSize: 12,
+                                                        color: Colors.white)));
+
+                                            setState(() {});
+
+                                            Navigator.of(context)
+                                                .pushReplacement(
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            CalendarScreen()));
+                                          }),
+                                          child: TextRegular(
+                                              text: 'Delete',
+                                              fontSize: 12,
+                                              color: Colors.white),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                      );
-                    }));
-              }),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.blue,
-                  borderRadius: BorderRadius.circular(10),
+                        );
+                      }));
+                }),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.blue,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Center(
+                    child: TextRegular(
+                        text: events[0].title,
+                        fontSize: 14,
+                        color: Colors.white),
+                  ),
                 ),
-                child: Center(
-                  child: TextRegular(
-                      text: events[0].title, fontSize: 14, color: Colors.white),
-                ),
-              ),
-            );
-          },
+              );
+            },
+          ),
         ),
       ),
     );
