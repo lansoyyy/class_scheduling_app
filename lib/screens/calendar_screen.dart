@@ -49,6 +49,10 @@ class _CalendarScreenState extends State<CalendarScreen> {
   late String newInstructor = '';
   late String newSubject = '';
 
+  late List newRooms = [];
+  late List newInstructors = [];
+  late List newSubjects = [];
+
   List<String> ids = [];
 
   var hasLoaded = false;
@@ -70,13 +74,17 @@ class _CalendarScreenState extends State<CalendarScreen> {
         startingMinutes.add(element['startMinute']);
         endingHours.add(element['endHour']);
         endingMinutes.add(element['endMinute']);
+        newRooms.add(element['room']);
+        newInstructors.add(element['instructor']);
+        newSubjects.add(element['subject']);
 
         ids.add(element['id']);
       }
 
       for (int i = 0; i < names.length; i++) {
         _events.add(CalendarEventData(
-            description: ids[i],
+            description:
+                'Room: ${newRooms[i]}, Instructor: ${newInstructors[i]}, Subject: ${newSubjects[i]} ',
             date: DateTime(2023, startMonths[i], startDates[i]),
             title: names[i],
             endTime: DateTime(2023, startMonths[i], startDates[i],
@@ -416,7 +424,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                     height: 5,
                                   ),
                                   TextRegular(
-                                      text: 'Room: ${events[0].date}',
+                                      text: 'Details: ${events[0].description}',
                                       fontSize: 14,
                                       color: Colors.black),
                                   const SizedBox(
