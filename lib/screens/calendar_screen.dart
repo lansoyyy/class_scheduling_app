@@ -7,6 +7,8 @@ import 'package:flutter_alarm_clock/flutter_alarm_clock.dart';
 import 'package:localstore/localstore.dart';
 
 class CalendarScreen extends StatefulWidget {
+  const CalendarScreen({Key? key}) : super(key: key);
+
   @override
   State<CalendarScreen> createState() => _CalendarScreenState();
 }
@@ -42,6 +44,10 @@ class _CalendarScreenState extends State<CalendarScreen> {
   List<int> endingHours = [];
 
   List<int> endingMinutes = [];
+
+  late String newRoom = '';
+  late String newInstructor = '';
+  late String newSubject = '';
 
   List<String> ids = [];
 
@@ -112,7 +118,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
     return RefreshIndicator(
       onRefresh: (() {
         return Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => CalendarScreen()));
+            MaterialPageRoute(builder: (context) => const CalendarScreen()));
       }),
       child: Scaffold(
         appBar: AppBar(
@@ -128,16 +134,15 @@ class _CalendarScreenState extends State<CalendarScreen> {
                   builder: (context) {
                     return StatefulBuilder(builder: ((context, setState) {
                       return Dialog(
-                        child: SingleChildScrollView(
-                          child: Container(
-                            height: 420,
-                            decoration: BoxDecoration(
-                              color: primary,
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 15, right: 15),
+                        child: Container(
+                          height: 420,
+                          decoration: BoxDecoration(
+                            color: primary,
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 15, right: 15),
+                            child: SingleChildScrollView(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -160,6 +165,78 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                     child: TextFormField(
                                       onChanged: ((value) {
                                         className = value;
+                                      }),
+                                      decoration: const InputDecoration(
+                                          enabledBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                width: 1,
+                                                color: Colors
+                                                    .black), //<-- SEE HERE
+                                          ),
+                                          filled: true,
+                                          fillColor: Colors.white),
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  TextRegular(
+                                      text: 'Room',
+                                      fontSize: 12,
+                                      color: Colors.black),
+                                  SizedBox(
+                                    height: 35,
+                                    child: TextFormField(
+                                      onChanged: ((value) {
+                                        newRoom = value;
+                                      }),
+                                      decoration: const InputDecoration(
+                                          enabledBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                width: 1,
+                                                color: Colors
+                                                    .black), //<-- SEE HERE
+                                          ),
+                                          filled: true,
+                                          fillColor: Colors.white),
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  TextRegular(
+                                      text: 'Subject',
+                                      fontSize: 12,
+                                      color: Colors.black),
+                                  SizedBox(
+                                    height: 35,
+                                    child: TextFormField(
+                                      onChanged: ((value) {
+                                        newSubject = value;
+                                      }),
+                                      decoration: const InputDecoration(
+                                          enabledBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                width: 1,
+                                                color: Colors
+                                                    .black), //<-- SEE HERE
+                                          ),
+                                          filled: true,
+                                          fillColor: Colors.white),
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  TextRegular(
+                                      text: 'Instructor',
+                                      fontSize: 12,
+                                      color: Colors.black),
+                                  SizedBox(
+                                    height: 35,
+                                    child: TextFormField(
+                                      onChanged: ((value) {
+                                        newInstructor = value;
                                       }),
                                       decoration: const InputDecoration(
                                           enabledBorder: OutlineInputBorder(
@@ -267,7 +344,10 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                             'startMinute': startMinutes,
                                             'endHour': endHour,
                                             'endMinute': endMinutes,
-                                            'id': id
+                                            'id': id,
+                                            'subject': newSubject,
+                                            'instructor': newInstructor,
+                                            'room': newRoom
                                           });
 
                                           FlutterAlarmClock.createAlarm(
@@ -277,9 +357,10 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                           Navigator.of(context).pushReplacement(
                                               MaterialPageRoute(
                                                   builder: (context) =>
-                                                      CalendarScreen()));
+                                                      const CalendarScreen()));
                                         }),
                                   ),
+                                  const SizedBox(height: 20),
                                 ],
                               ),
                             ),
@@ -295,8 +376,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
             )),
         body: RefreshIndicator(
           onRefresh: () {
-            return Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (context) => CalendarScreen()));
+            return Navigator.of(context).pushReplacement(MaterialPageRoute(
+                builder: (context) => const CalendarScreen()));
           },
           child: WeekView(
             eventTileBuilder: (
@@ -313,7 +394,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                       builder: ((context) {
                         return Dialog(
                           child: SizedBox(
-                            height: 220,
+                            height: 280,
                             child: Padding(
                               padding:
                                   const EdgeInsets.fromLTRB(30, 20, 30, 20),
@@ -329,6 +410,13 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                   ),
                                   TextRegular(
                                       text: 'Date: ${events[0].date}',
+                                      fontSize: 14,
+                                      color: Colors.black),
+                                  const SizedBox(
+                                    height: 5,
+                                  ),
+                                  TextRegular(
+                                      text: 'Room: ${events[0].date}',
                                       fontSize: 14,
                                       color: Colors.black),
                                   const SizedBox(
@@ -391,11 +479,10 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
                                             setState(() {});
 
-                                            Navigator.of(context)
-                                                .pushReplacement(
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            CalendarScreen()));
+                                            Navigator.of(context).pushReplacement(
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        const CalendarScreen()));
                                           }),
                                           child: TextRegular(
                                               text: 'Delete',
