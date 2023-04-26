@@ -157,7 +157,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                                     height: 10,
                                   ),
                                   TextRegular(
-                                      text: 'Event name',
+                                      text: 'Task name',
                                       fontSize: 12,
                                       color: Colors.black),
                                   SizedBox(
